@@ -1,12 +1,13 @@
 import React from 'react';
-import { DatePicker } from 'antd';
-import './App.css';
-import 'antd/dist/antd.css';
+
+import LayoutContainer from './components/LayoutContainer';
+import './App.scss';
+import 'antd/dist/antd.min.css';
 
 function App() {
   return (
     <div className="App">
-      <DatePicker />
+      <LayoutContainer />
     </div>
   );
 }

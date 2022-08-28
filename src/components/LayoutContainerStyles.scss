@@ -1,0 +1,33 @@
+$dark: #001529;
+$blue: #1890FF;
+
+.sider__wrapper {
+  background: $dark;
+  overflow: scroll;
+}
+
+.resizer {
+  width: 3px;
+  background: $dark;
+  z-index: 500;
+
+  &:hover {
+    background: $blue;
+  }
+
+  &:active {
+    background: $blue;
+  }
+
+  &__cursor {
+    cursor: ew-resize;
+  }
+
+  &__cursor_left {
+    cursor: w-resize;
+  }
+
+  &__cursor_right {
+    cursor: e-resize;
+  }
+}
