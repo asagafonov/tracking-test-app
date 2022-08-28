@@ -48,7 +48,6 @@ export const pointsSlice = createSlice({
 
 export const {
   setPoints,
-  composeRoutes,
   updateRoutes,
   setActiveRoute,
   setIsFetching,
