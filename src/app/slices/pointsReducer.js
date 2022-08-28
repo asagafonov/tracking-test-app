@@ -9,32 +9,19 @@ const initialState = {
   isFetching: false,
 };
 
-// const route = {
-//   id: 0,
-//   from: {
-//     id: 23,
-//     name: 'Адрес1',
-//     lat: 12345,
-//     lng: 12345,
-//   },
-//   to: {
-//     id: 4,
-//     name: 'Адрес2',
-//     lat: 2234,
-//     lng: 88565,
-//   },
-// };
-
 export const pointsSlice = createSlice({
   name: 'points',
   initialState,
   reducers: {
     setPoints: (state, action) => {
       state.points = action.payload;
-    },
-    composeRoutes: (state) => {
-      const chunks = chunk(state.points, 2).filter((el) => el?.length === 2);
-      state.routes = chunks.map(([from, to], ind) => ({ id: ind, from, to }));
+      const chunks = chunk(action.payload, 2).filter((el) => el?.length === 2);
+      state.routes = chunks.map(([from, to], ind) => ({
+        id: ind,
+        name: `Маршрут из ${from.name} в ${to.name}`,
+        from,
+        to,
+      }));
     },
     updateRoutes: (state, action) => {
       const { routes } = state;
@@ -50,7 +37,7 @@ export const pointsSlice = createSlice({
     },
     setActiveRoute: (state, action) => {
       state.activeRouteId = action.payload;
-      const activeRoute = state.routes.find((route) => route?.id === action.payload);
+      const activeRoute = state.routes.find((route) => route?.id === Number(action.payload));
       state.activeRouteData = activeRoute;
     },
     setIsFetching: (state, action) => {

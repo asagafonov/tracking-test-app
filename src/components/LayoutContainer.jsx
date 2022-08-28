@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { NodeIndexOutlined } from '@ant-design/icons';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Select } from 'antd';
 import cn from 'classnames';
 
 import './LayoutContainerStyles.scss';
+import { setActiveRoute } from '../app/slices/pointsReducer';
 
 const {
   Header, Content, Footer, Sider,
@@ -18,22 +20,37 @@ function getItem(label, key, icon, children) {
   };
 }
 
-const items = [
-  getItem('Option 1aldkjf;lakjdf;lkjads;lfkj;alkdsjf;laksjdf;lkajsd;flkja;ldskfjs;l', '1', <NodeIndexOutlined />),
-  getItem('Option 2', '2', <NodeIndexOutlined />),
-  getItem('User', 'sub1', <NodeIndexOutlined />, [
-    getItem('Tom', '3'),
-    getItem('Bill', '4'),
-    getItem('Alex', '5'),
-  ]),
-  getItem('Team', 'sub2', <NodeIndexOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
-  getItem('Files', '9', <NodeIndexOutlined />),
-];
+const transformRoutes = (routesList, pointsList) => routesList.map((el) => getItem(
+  <Select style={{ width: '100%' }}>
+    {
+      pointsList.map((listEl) => (
+        <Select.Option value={listEl.name} key={listEl.id} />
+      ))
+    }
+  </Select>,
+  el?.id,
+  <NodeIndexOutlined />,
+));
 
 const LayoutContainer = () => {
   const [width, setWidth] = useState(400);
+  const [routes, setRoutes] = useState([]);
+  const [points, setPoints] = useState([]);
   const pageMiddle = Math.round(window.innerWidth / 2);
   const minWidth = 200;
+
+  const dispatch = useDispatch();
+  const routesData = useSelector((state) => state.points.routes);
+  const pointsData = useSelector((state) => state.points.points);
+  const items = transformRoutes(routes, points);
+
+  useEffect(() => {
+    setRoutes(routesData);
+  }, [routesData]);
+
+  useEffect(() => {
+    setPoints(pointsData);
+  }, [pointsData]);
 
   useEffect(() => {
     const preventDragover = (e) => e.preventDefault();
@@ -60,6 +77,10 @@ const LayoutContainer = () => {
     });
   };
 
+  const handleMenuClick = (e) => {
+    dispatch(setActiveRoute(e.key));
+  };
+
   const resizerStyle = cn('resizer', {
     resizer__cursor: width < pageMiddle && width > minWidth,
     resizer__cursor_left: width >= pageMiddle,
@@ -78,7 +99,13 @@ const LayoutContainer = () => {
       >
         <Sider width="100%">
           <div className="logo" />
-          <Menu theme="dark" mode="inline" items={items} style={{ minWidth: '400px', overflow: 'scroll' }} />
+          <Menu
+            theme="dark"
+            mode="inline"
+            items={items}
+            style={{ minWidth: '400px', overflow: 'scroll' }}
+            onClick={handleMenuClick}
+          />
         </Sider>
       </div>
       <div
