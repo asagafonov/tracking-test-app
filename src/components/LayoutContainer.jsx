@@ -78,7 +78,7 @@ const LayoutContainer = () => {
       >
         <Sider width="100%">
           <div className="logo" />
-          <Menu theme="dark" mode="inline" items={items} />
+          <Menu theme="dark" mode="inline" items={items} style={{ minWidth: '400px', overflow: 'scroll' }} />
         </Sider>
       </div>
       <div
