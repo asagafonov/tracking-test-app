@@ -23,12 +23,12 @@ const Map = () => {
       />
       {from && (
         <Marker position={[from.lat, from.lng]}>
-          {from?.name && <Popup>{from.name}</Popup>}
+          {from?.name && <Popup>{`Погрузка: ${from.name}`}</Popup>}
         </Marker>
       )}
       {to && (
         <Marker position={[to.lat, to.lng]}>
-          {to?.name && <Popup>{to.name}</Popup>}
+          {to?.name && <Popup>{`Разгрузка: ${to.name}`}</Popup>}
         </Marker>
       )}
       {polyline && (
