@@ -21,13 +21,31 @@ function getItem(label, key, icon, children) {
 }
 
 const transformRoutes = (routesList, pointsList) => routesList.map((el) => getItem(
-  <Select style={{ width: '100%' }}>
-    {
-      pointsList.map((listEl) => (
-        <Select.Option value={listEl.name} key={listEl.id} />
-      ))
-    }
-  </Select>,
+  (
+    <div
+      style={{
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '6px',
+      }}
+    >
+      <Select>
+        {
+          pointsList.map((listEl) => (
+            <Select.Option value={listEl.name} key={listEl.id} />
+          ))
+        }
+      </Select>
+      <Select>
+        {
+          pointsList.map((listEl) => (
+            <Select.Option value={listEl.name} key={listEl.id} />
+          ))
+        }
+      </Select>
+    </div>
+  ),
   el?.id,
   <NodeIndexOutlined />,
 ));
