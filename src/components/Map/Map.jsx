@@ -1,13 +1,14 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import {
-  MapContainer, TileLayer, Marker, Popup,
+  MapContainer, TileLayer, Marker, Popup, Polyline,
 } from 'react-leaflet';
 
 const Map = () => {
   const centerCoords = [55.751442, 37.615569];
 
-  const { from, to } = useSelector((state) => state.points.activeRouteData);
+  const { from, to, polyline } = useSelector((state) => state.points.activeRouteData);
+  const colorOptions = { color: '#407FC3' };
 
   return (
     <MapContainer
@@ -29,6 +30,9 @@ const Map = () => {
         <Marker position={[to.lat, to.lng]}>
           {to?.name && <Popup>{to.name}</Popup>}
         </Marker>
+      )}
+      {polyline && (
+        <Polyline pathOptions={colorOptions} positions={polyline} />
       )}
     </MapContainer>
   );

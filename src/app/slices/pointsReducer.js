@@ -55,6 +55,9 @@ export const pointsSlice = createSlice({
     setIsFetching: (state, action) => {
       state.isFetching = action.payload;
     },
+    setPolyline: (state, action) => {
+      state.activeRouteData.polyline = action.payload;
+    },
   },
 });
 
@@ -63,6 +66,7 @@ export const {
   updateRoutes,
   setActiveRoute,
   setIsFetching,
+  setPolyline,
 } = pointsSlice.actions;
 
 export default pointsSlice.reducer;
