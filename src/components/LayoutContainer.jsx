@@ -30,14 +30,18 @@ const transformRoutes = (routesList, pointsList) => routesList.map((el) => getIt
         gap: '6px',
       }}
     >
-      <Select>
+      <Select
+        defaultValue={routesList[el?.id]?.from?.name}
+      >
         {
           pointsList.map((listEl) => (
             <Select.Option value={listEl.name} key={listEl.id} />
           ))
         }
       </Select>
-      <Select>
+      <Select
+        defaultValue={routesList[el?.id]?.to?.name}
+      >
         {
           pointsList.map((listEl) => (
             <Select.Option value={listEl.name} key={listEl.id} />
