@@ -179,6 +179,7 @@ const LayoutContainer = () => {
         <Footer
           style={{
             textAlign: 'center',
+            fontSize: '10px',
           }}
         >
           coded by asagafonov
