@@ -25,15 +25,27 @@ export const pointsSlice = createSlice({
     },
     updateRoutes: (state, action) => {
       const { routes } = state;
-      const { routeId, pointFrom, pointTo } = action.payload;
+      const {
+        type, routeId, pointFrom, pointTo,
+      } = action.payload;
 
-      state.routes = routes.map((route) => {
-        if (route?.id === routeId) {
-          route.from = pointFrom;
-          route.to = pointTo;
+      const updatedRoutes = routes.map((route) => {
+        if (Number(route?.id) === Number(routeId)) {
+          if (type === 'from') {
+            route.from = pointFrom;
+          }
+          if (type === 'to') {
+            route.to = pointTo;
+          }
+          route.name = `Маршрут из ${route.from.name} в ${route.to.name}`;
         }
+
         return route;
       });
+
+      const activeRoute = state.routes.find((route) => route?.id === Number(routeId));
+      state.activeRouteData = activeRoute;
+      state.routes = updatedRoutes;
     },
     setActiveRoute: (state, action) => {
       state.activeRouteId = action.payload;

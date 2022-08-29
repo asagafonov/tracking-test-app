@@ -5,7 +5,7 @@ import { Layout, Menu, Select } from 'antd';
 import cn from 'classnames';
 
 import './LayoutContainerStyles.scss';
-import { setActiveRoute } from '../app/slices/pointsReducer';
+import { setActiveRoute, updateRoutes } from '../app/slices/pointsReducer';
 
 const {
   Header, Content, Footer, Sider,
@@ -20,39 +20,42 @@ function getItem(label, key, icon, children) {
   };
 }
 
-const transformRoutes = (routesList, pointsList) => routesList.map((el) => getItem(
-  (
-    <div
-      style={{
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '6px',
-      }}
-    >
-      <Select
-        defaultValue={routesList[el?.id]?.from?.name}
+const transformRoutes = (routesList, pointsList, changeFrom, changeTo) => routesList
+  .map((el) => getItem(
+    (
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '6px',
+        }}
       >
-        {
-          pointsList.map((listEl) => (
-            <Select.Option value={listEl.name} key={listEl.id} />
-          ))
-        }
-      </Select>
-      <Select
-        defaultValue={routesList[el?.id]?.to?.name}
-      >
-        {
-          pointsList.map((listEl) => (
-            <Select.Option value={listEl.name} key={listEl.id} />
-          ))
-        }
-      </Select>
-    </div>
-  ),
-  el?.id,
-  <NodeIndexOutlined />,
-));
+        <Select
+          defaultValue={routesList[el?.id]?.from?.name}
+          onChange={changeFrom}
+        >
+          {
+            pointsList.map((listEl) => (
+              <Select.Option value={listEl.name} key={listEl.id} />
+            ))
+          }
+        </Select>
+        <Select
+          defaultValue={routesList[el?.id]?.to?.name}
+          onChange={changeTo}
+        >
+          {
+            pointsList.map((listEl) => (
+              <Select.Option value={listEl.name} key={listEl.id} />
+            ))
+          }
+        </Select>
+      </div>
+    ),
+    el?.id,
+    <NodeIndexOutlined />,
+  ));
 
 const LayoutContainer = () => {
   const [width, setWidth] = useState(400);
@@ -64,7 +67,21 @@ const LayoutContainer = () => {
   const dispatch = useDispatch();
   const routesData = useSelector((state) => state.points.routes);
   const pointsData = useSelector((state) => state.points.points);
-  const items = transformRoutes(routes, points);
+  const activeId = useSelector((state) => state.points.activeRouteId);
+
+  const changeFrom = (val, opt) => {
+    const choiceIndex = Number(opt?.key);
+    const target = pointsData.find((p) => p.id === choiceIndex);
+    dispatch(updateRoutes({ type: 'from', routeId: activeId, pointFrom: target }));
+  };
+
+  const changeTo = (val, opt) => {
+    const choiceIndex = Number(opt?.key);
+    const target = pointsData.find((p) => p.id === choiceIndex);
+    dispatch(updateRoutes({ type: 'to', routeId: activeId, pointTo: target }));
+  };
+
+  const items = transformRoutes(routes, points, changeFrom, changeTo);
 
   useEffect(() => {
     setRoutes(routesData);
