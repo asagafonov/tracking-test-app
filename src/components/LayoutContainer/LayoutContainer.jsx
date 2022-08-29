@@ -5,7 +5,8 @@ import { Layout, Menu, Select } from 'antd';
 import cn from 'classnames';
 
 import './LayoutContainerStyles.scss';
-import { setActiveRoute, updateRoutes } from '../app/slices/pointsReducer';
+import Map from '../Map/Map';
+import { setActiveRoute, updateRoutes } from '../../app/slices/pointsReducer';
 
 const {
   Header, Content, Footer, Sider,
@@ -172,7 +173,7 @@ const LayoutContainer = () => {
               minHeight: 360,
             }}
           >
-            Map content here
+            <Map />
           </div>
         </Content>
         <Footer

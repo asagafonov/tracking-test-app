@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import LayoutContainer from './components/LayoutContainer';
+import LayoutContainer from './components/LayoutContainer/LayoutContainer';
 import { setPoints } from './app/slices/pointsReducer';
 import './App.scss';
 import 'antd/dist/antd.min.css';
