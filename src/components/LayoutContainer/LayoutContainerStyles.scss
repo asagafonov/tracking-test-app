@@ -1,6 +1,18 @@
 $dark: #001529;
 $blue: #1890FF;
 
+.logo {
+  width: 300px;
+  margin-left: 24px;
+
+  &__wrapper {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
 .sider__wrapper {
   background: $dark;
   overflow: scroll;
@@ -30,4 +42,21 @@ $blue: #1890FF;
   &__cursor_right {
     cursor: e-resize;
   }
+}
+
+.mobile-placeholder {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  pointer-events: none;
+  background-color: $dark;
+  color: #fff;
 }

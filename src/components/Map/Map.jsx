@@ -21,7 +21,6 @@ const Map = () => {
   const [centerCoords, setCenterCoords] = useState(defaultCenterCoords);
 
   const { from, to, polyline } = useSelector((state) => state.points.activeRouteData);
-  const colorOptions = { color: '#407FC3' };
 
   useEffect(() => {
     if (polyline) {
@@ -34,7 +33,7 @@ const Map = () => {
       center={centerCoords}
       zoom={11}
       scrollWheelZoom={false}
-      style={{ width: '100%', height: '580px' }}
+      style={{ width: '100%', height: '550px' }}
     >
       <TileLayer
         attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
@@ -52,7 +51,7 @@ const Map = () => {
         </Marker>
       )}
       {polyline && (
-        <Polyline pathOptions={colorOptions} positions={polyline} />
+        <Polyline pathOptions={{ color: '#407FC3' }} positions={polyline} />
       )}
     </MapContainer>
   );

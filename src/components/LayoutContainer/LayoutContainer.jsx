@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { NodeIndexOutlined } from '@ant-design/icons';
+import { NodeIndexOutlined, Loading3QuartersOutlined } from '@ant-design/icons';
 import { Layout, Menu, Select } from 'antd';
 import cn from 'classnames';
 
 import './LayoutContainerStyles.scss';
 import Map from '../Map/Map';
 import { setActiveRoute, updateRoutes } from '../../app/slices/pointsReducer';
+import deliveryLogo from '../../app/images/delivery_logo.svg';
 
 const {
-  Header, Content, Footer, Sider,
+  Header, Content, Sider,
 } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -60,15 +61,20 @@ const transformRoutes = (routesList, pointsList, changeFrom, changeTo) => routes
 
 const LayoutContainer = () => {
   const [width, setWidth] = useState(400);
-  const [routes, setRoutes] = useState([]);
-  const [points, setPoints] = useState([]);
+  const [routesList, setRoutesList] = useState([]);
+  const [pointsList, setPointsList] = useState([]);
+  const [isUpdating, setIsUpdating] = useState(false);
+
   const pageMiddle = Math.round(window.innerWidth / 2);
   const minWidth = 200;
 
   const dispatch = useDispatch();
+
   const routesData = useSelector((state) => state.points.routes);
   const pointsData = useSelector((state) => state.points.points);
   const activeId = useSelector((state) => state.points.activeRouteId);
+  const activeRouteData = useSelector((state) => state.points.activeRouteData);
+  const isFetching = useSelector((state) => state.points.isFetching);
 
   const changeFrom = (val, opt) => {
     const choiceIndex = Number(opt?.key);
@@ -82,14 +88,24 @@ const LayoutContainer = () => {
     dispatch(updateRoutes({ type: 'to', routeId: activeId, pointTo: target }));
   };
 
-  const items = transformRoutes(routes, points, changeFrom, changeTo);
+  const items = transformRoutes(routesList, pointsList, changeFrom, changeTo);
 
   useEffect(() => {
-    setRoutes(routesData);
+    if (!isFetching && activeRouteData?.polyline) {
+      setIsUpdating(true);
+    } else {
+      setTimeout(() => {
+        setIsUpdating(false);
+      }, 1200);
+    }
+  }, [isFetching]);
+
+  useEffect(() => {
+    setRoutesList(routesData);
   }, [routesData]);
 
   useEffect(() => {
-    setPoints(pointsData);
+    setPointsList(pointsData);
   }, [pointsData]);
 
   useEffect(() => {
@@ -138,7 +154,6 @@ const LayoutContainer = () => {
         className="sider__wrapper"
       >
         <Sider width="100%">
-          <div className="logo" />
           <Menu
             theme="dark"
             mode="inline"
@@ -160,7 +175,26 @@ const LayoutContainer = () => {
           style={{
             padding: 0,
           }}
-        />
+        >
+          <div className="logo__wrapper">
+            <img
+              src={deliveryLogo}
+              className="logo"
+              alt=""
+            />
+            {
+              isUpdating && (
+                <Loading3QuartersOutlined
+                  spin
+                  style={{
+                    color: '#fff',
+                    marginRight: '30px',
+                  }}
+                />
+              )
+            }
+          </div>
+        </Header>
         <Content
           style={{
             margin: '0 16px',
@@ -176,14 +210,6 @@ const LayoutContainer = () => {
             <Map />
           </div>
         </Content>
-        <Footer
-          style={{
-            textAlign: 'center',
-            fontSize: '10px',
-          }}
-        >
-          coded by asagafonov
-        </Footer>
       </Layout>
     </Layout>
   );

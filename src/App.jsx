@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import LayoutContainer from './components/LayoutContainer/LayoutContainer';
 import { setPoints } from './app/slices/pointsReducer';
+import useResize from './app/helpers/useResize';
 import './App.scss';
 import 'antd/dist/antd.min.css';
 
@@ -25,9 +26,32 @@ const coords = [
   {
     id: 5, name: 'Точка 6', lat: 55.768282, lng: 37.382783,
   },
+  {
+    id: 6, name: 'Точка 7', lat: 55.905438, lng: 37.710340,
+  },
+  {
+    id: 7, name: 'Точка 8', lat: 55.902811, lng: 37.413206,
+  },
+  {
+    id: 8, name: 'Точка 9', lat: 55.555246, lng: 37.724291,
+  },
+  {
+    id: 9, name: 'Точка 10', lat: 55.648847, lng: 37.538069,
+  },
 ];
 
 function App() {
+  const [isMobile, setisMobile] = useState(false);
+
+  const breakpoint = useResize();
+
+  useEffect(() => {
+    if (breakpoint < 768) {
+      setisMobile(true);
+    } else {
+      setisMobile(false);
+    }
+  }, [breakpoint]);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -36,7 +60,8 @@ function App() {
 
   return (
     <div className="App">
-      <LayoutContainer />
+      {!isMobile && <LayoutContainer />}
+      {isMobile && <div className="mobile-placeholder"><p>Мобильная версия недоступна</p></div>}
     </div>
   );
 }
