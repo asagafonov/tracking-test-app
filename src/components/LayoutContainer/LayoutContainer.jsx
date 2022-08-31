@@ -207,7 +207,7 @@ const LayoutContainer = () => {
               minHeight: 360,
             }}
           >
-            <Map />
+            <Map overlayWidth={width} />
           </div>
         </Content>
       </Layout>
