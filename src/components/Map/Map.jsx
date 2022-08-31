@@ -46,7 +46,7 @@ const Map = ({ overlayWidth }) => {
       center={centerCoords}
       zoom={11}
       scrollWheelZoom={false}
-      style={{ width: '100%', minHeight: '550px', height: `${window.innerHeight * 0.80}px` }}
+      style={{ width: '100%', minHeight: '550px', height: `${window.innerHeight * 0.8}px` }}
     >
       <TileLayer
         attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"

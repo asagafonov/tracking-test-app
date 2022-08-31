@@ -26,12 +26,7 @@ const transformRoutes = (routesList, pointsList, changeFrom, changeTo) => routes
   .map((el) => getItem(
     (
       <div
-        style={{
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '6px',
-        }}
+        className="menu__item"
       >
         <Select
           defaultValue={routesList[el?.id]?.from?.name}
@@ -162,6 +157,15 @@ const LayoutContainer = () => {
             onClick={handleMenuClick}
           />
         </Sider>
+        <p
+          className="sider__link"
+        >
+          coded by
+          {' '}
+          <a href="https://asagafonov.com">
+            asagafonov
+          </a>
+        </p>
       </div>
       <div
         draggable
