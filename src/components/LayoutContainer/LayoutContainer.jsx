@@ -1,58 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { NodeIndexOutlined, Loading3QuartersOutlined } from '@ant-design/icons';
-import { Layout, Menu, Select } from 'antd';
-import cn from 'classnames';
+import { Loading3QuartersOutlined } from '@ant-design/icons';
+import { Layout, Menu } from 'antd';
 
 import './LayoutContainerStyles.scss';
 import Map from '../Map/Map';
+import Resizer from '../Resizer/Resizer';
+import transformRoutes from '../../app/helpers/transformRoutes';
 import { setActiveRoute, updateRoutes } from '../../app/slices/pointsReducer';
 import deliveryLogo from '../../app/images/delivery_logo.svg';
 
 const {
   Header, Content, Sider,
 } = Layout;
-
-function getItem(label, key, icon, children) {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  };
-}
-
-const transformRoutes = (routesList, pointsList, changeFrom, changeTo) => routesList
-  .map((el) => getItem(
-    (
-      <div
-        className="menu__item"
-      >
-        <Select
-          defaultValue={routesList[el?.id]?.from?.name}
-          onChange={changeFrom}
-        >
-          {
-            pointsList.map((listEl) => (
-              <Select.Option value={listEl.name} key={listEl.id} />
-            ))
-          }
-        </Select>
-        <Select
-          defaultValue={routesList[el?.id]?.to?.name}
-          onChange={changeTo}
-        >
-          {
-            pointsList.map((listEl) => (
-              <Select.Option value={listEl.name} key={listEl.id} />
-            ))
-          }
-        </Select>
-      </div>
-    ),
-    el?.id,
-    <NodeIndexOutlined />,
-  ));
 
 const LayoutContainer = () => {
   const [width, setWidth] = useState(400);
@@ -103,40 +63,9 @@ const LayoutContainer = () => {
     setPointsList(pointsData);
   }, [pointsData]);
 
-  useEffect(() => {
-    const preventDragover = (e) => e.preventDefault();
-
-    document.addEventListener('dragover', preventDragover, false);
-    return () => document.removeEventListener('dragover', preventDragover, false);
-  }, []);
-
-  const handleDragStart = (e) => {
-    e.dataTransfer.effectAllowed = 'move';
-  };
-
-  const handleDragEnd = (e) => {
-    const newWidth = e.pageX;
-
-    setWidth(() => {
-      if (newWidth > pageMiddle) {
-        return pageMiddle;
-      }
-      if (newWidth <= minWidth) {
-        return minWidth;
-      }
-      return newWidth;
-    });
-  };
-
   const handleMenuClick = (e) => {
     dispatch(setActiveRoute(e.key));
   };
-
-  const resizerStyle = cn('resizer', {
-    resizer__cursor: width < pageMiddle && width > minWidth,
-    resizer__cursor_left: width >= pageMiddle,
-    resizer__cursor_right: width <= minWidth,
-  });
 
   return (
     <Layout
@@ -167,11 +96,11 @@ const LayoutContainer = () => {
           </a>
         </p>
       </div>
-      <div
-        draggable
-        className={resizerStyle}
-        onDragEnd={handleDragEnd}
-        onDragStart={handleDragStart}
+      <Resizer
+        minWidth={minWidth}
+        pageMiddle={pageMiddle}
+        width={width}
+        setWidth={setWidth}
       />
       <Layout className="site-layout">
         <Header

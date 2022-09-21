@@ -24,6 +24,7 @@ $blue: #1890FF;
   background: $dark;
   overflow: scroll;
   position: relative;
+  padding-right: 10px;
 }
 
 .sider__link {
@@ -31,32 +32,6 @@ $blue: #1890FF;
   position: absolute;
   width: 100%;
   bottom: 0,
-}
-
-.resizer {
-  width: 3px;
-  background: $dark;
-  z-index: 500;
-
-  &:hover {
-    background: $blue;
-  }
-
-  &:active {
-    background: $blue;
-  }
-
-  &__cursor {
-    cursor: ew-resize;
-  }
-
-  &__cursor_left {
-    cursor: w-resize;
-  }
-
-  &__cursor_right {
-    cursor: e-resize;
-  }
 }
 
 .mobile-placeholder {
