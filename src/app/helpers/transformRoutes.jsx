@@ -23,9 +23,11 @@ const transformRoutes = (routesList, pointsList, changeFrom, changeTo) => routes
           onChange={changeFrom}
         >
           {
-            pointsList.map((listEl) => (
-              <Select.Option value={listEl.name} key={listEl.id} />
-            ))
+            pointsList
+              .filter((point) => point.id !== routesList[el.id].to.id)
+              .map((listEl) => (
+                <Select.Option value={listEl.name} key={listEl.id} />
+              ))
           }
         </Select>
         <Select
@@ -33,9 +35,11 @@ const transformRoutes = (routesList, pointsList, changeFrom, changeTo) => routes
           onChange={changeTo}
         >
           {
-            pointsList.map((listEl) => (
-              <Select.Option value={listEl.name} key={listEl.id} />
-            ))
+            pointsList
+              .filter((point) => point.id !== routesList[el.id].from.id)
+              .map((listEl) => (
+                <Select.Option value={listEl.name} key={listEl.id} />
+              ))
           }
         </Select>
       </div>
