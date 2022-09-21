@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { chunk } from 'lodash';
 
 const initialState = {
   points: [],
@@ -15,13 +14,9 @@ export const pointsSlice = createSlice({
   reducers: {
     setPoints: (state, action) => {
       state.points = action.payload;
-      const chunks = chunk(action.payload, 2).filter((el) => el?.length === 2);
-      state.routes = chunks.map(([from, to], ind) => ({
-        id: ind,
-        name: `Маршрут из ${from.name} в ${to.name}`,
-        from,
-        to,
-      }));
+    },
+    setRoutes: (state, action) => {
+      state.routes = action.payload;
     },
     updateRoutes: (state, action) => {
       const { routes } = state;
@@ -63,6 +58,7 @@ export const pointsSlice = createSlice({
 
 export const {
   setPoints,
+  setRoutes,
   updateRoutes,
   setActiveRoute,
   setIsFetching,
