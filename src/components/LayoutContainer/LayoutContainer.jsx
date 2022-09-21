@@ -82,7 +82,7 @@ const LayoutContainer = () => {
             theme="dark"
             mode="inline"
             items={items}
-            style={{ minWidth: '400px', overflow: 'scroll' }}
+            style={{ minWidth: width }}
             onClick={handleMenuClick}
           />
         </Sider>
