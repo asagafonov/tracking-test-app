@@ -3,7 +3,7 @@ import cn from 'classnames';
 import PropTypes from 'prop-types';
 
 import './ResizerStyles.scss';
-import { ArrowsAltOutlined } from '@ant-design/icons';
+import twoArrows from '../../app/images/two-arrows.png';
 
 const Resizer = ({
   minWidth,
@@ -49,9 +49,10 @@ const Resizer = ({
       <div
         className="resizer__circle"
       >
-        <ArrowsAltOutlined
+        <img
           className="resizer__circle_icon"
-          style={{ color: '#fff', transform: 'rotate(45deg)' }}
+          src={twoArrows}
+          alt=""
         />
       </div>
     </div>

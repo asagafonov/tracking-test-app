@@ -39,5 +39,9 @@ $blue: #1890FF;
     display: flex;
     justify-content: center;
     align-items: center;
+
+    &_icon {
+      width: 70%;
+    }
   }
 }
