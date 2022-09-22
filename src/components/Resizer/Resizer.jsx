@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
 
@@ -11,8 +11,12 @@ const Resizer = ({
   width,
   setWidth,
 }) => {
+  const [isResizing, setIsResizing] = useState(false);
+
   const resize = (e) => {
-    const newWidth = e.pageX;
+    setIsResizing(true);
+    const resizerWidth = 18;
+    const newWidth = e.pageX - resizerWidth;
 
     setWidth(() => {
       if (newWidth > pageMiddle) {
@@ -26,6 +30,7 @@ const Resizer = ({
   };
 
   const stopResize = () => {
+    setIsResizing(false);
     window.removeEventListener('mousemove', resize);
   };
 
@@ -41,13 +46,17 @@ const Resizer = ({
     resizer__cursor_right: width <= minWidth,
   });
 
+  const resizerCircleStyle = cn('resizer__circle', {
+    resizer__circle_active: isResizing,
+  });
+
   return (
     <div
       className={resizerStyle}
       onMouseDown={handleMouseDown}
     >
       <div
-        className="resizer__circle"
+        className={resizerCircleStyle}
       >
         <img
           className="resizer__circle_icon"

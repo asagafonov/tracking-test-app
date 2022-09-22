@@ -39,9 +39,15 @@ $blue: #1890FF;
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: all 100ms linear;
 
     &_icon {
       width: 70%;
+    }
+
+    &_active {
+      transform: scale(1.2, 1.2);
+      transition: all 100ms linear;
     }
   }
 }
