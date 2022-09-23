@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Icon } from 'leaflet';
 import {
   MapContainer, TileLayer, Marker, Popup, Polyline, useMap,
 } from 'react-leaflet';
-import PropTypes from 'prop-types';
 
-const Controls = ({ coords, overlayWidth }) => {
+import { convertCoordsToLatLng, convertPolylineToLatLng } from '../../app/helpers/convertTypes';
+import { useAppSelector } from '../../app/hooks';
+
+const Controls = ({ coords, overlayWidth }: { coords: number[]; overlayWidth: number }) => {
   const map = useMap();
   const zoom = 10;
 
   useEffect(() => {
-    const targetPoint = map.project(coords, zoom).add([overlayWidth / 2, 0]);
+    const targetPoint = map.project(convertCoordsToLatLng(coords), zoom).add([overlayWidth / 2, 0]);
     const targetLatLng = map.unproject(targetPoint, zoom);
     map.setView(targetLatLng, zoom);
   }, [coords]);
@@ -19,11 +20,12 @@ const Controls = ({ coords, overlayWidth }) => {
   return null;
 };
 
-const Map = ({ overlayWidth }) => {
-  const defaultCenterCoords = [55.753955, 37.620616];
-  const [centerCoords, setCenterCoords] = useState(defaultCenterCoords);
+const Map = ({ overlayWidth }: { overlayWidth: number }) => {
+  const defaultCenterCoords: number[] = [55.753955, 37.620616];
+  const [centerCoords, setCenterCoords] = useState<number[]>(defaultCenterCoords);
 
-  const { from, to, polyline } = useSelector((state) => state.points.activeRouteData);
+  const activeRouteData = useAppSelector((state) => state.points.activeRouteData);
+  const { from, to, polyline } = activeRouteData || {};
 
   useEffect(() => {
     if (polyline) {
@@ -43,7 +45,7 @@ const Map = ({ overlayWidth }) => {
 
   return (
     <MapContainer
-      center={centerCoords}
+      center={convertCoordsToLatLng(centerCoords)}
       zoom={11}
       scrollWheelZoom={false}
       style={{ width: '100%', minHeight: '550px', height: `${window.innerHeight * 0.8}px` }}
@@ -64,19 +66,10 @@ const Map = ({ overlayWidth }) => {
         </Marker>
       )}
       {polyline && (
-        <Polyline pathOptions={{ color: '#407FC3' }} positions={polyline} />
+        <Polyline pathOptions={{ color: '#407FC3' }} positions={convertPolylineToLatLng(polyline)} />
       )}
     </MapContainer>
   );
-};
-
-Map.propTypes = {
-  overlayWidth: PropTypes.number,
-};
-
-Controls.propTypes = {
-  coords: PropTypes.array,
-  overlayWidth: PropTypes.number,
 };
 
 export default Map;

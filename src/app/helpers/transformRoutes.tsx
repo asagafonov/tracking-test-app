@@ -2,17 +2,24 @@ import React from 'react';
 import { Select } from 'antd';
 
 import { NodeIndexOutlined } from '@ant-design/icons';
+import { Point, Route } from '../interfaces/store-interfaces';
 
-function getItem(label, key, icon, children) {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  };
-}
+const getItem = (
+  key,
+  icon,
+  children,
+) => ({
+  key,
+  icon,
+  children,
+});
 
-const transformRoutes = (routesList, pointsList, changeFrom, changeTo) => routesList
+const transformRoutes = (
+  routesList: Route[],
+  pointsList: Point[],
+  changeFrom,
+  changeTo,
+) => routesList
   .map((el) => getItem(
     (
       <div

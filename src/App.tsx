@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 
+import { useAppDispatch } from './app/hooks';
 import LayoutContainer from './components/LayoutContainer/LayoutContainer';
 import { setPoints } from './app/slices/pointsReducer';
 import useResize from './app/helpers/useResize';
@@ -52,7 +52,8 @@ function App() {
       setisMobile(false);
     }
   }, [breakpoint]);
-  const dispatch = useDispatch();
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(setPoints(coords));

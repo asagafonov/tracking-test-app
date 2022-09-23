@@ -15,4 +15,7 @@ const store = configureStore({
 
 saga.run(pointsSaga);
 
+export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>
+
 export default store;

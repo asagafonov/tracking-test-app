@@ -10,10 +10,15 @@ const Resizer = ({
   pageMiddle,
   width,
   setWidth,
+}: {
+  minWidth: number;
+  pageMiddle: number;
+  width: number;
+  setWidth: React.Dispatch<React.SetStateAction<number>>;
 }) => {
   const [isResizing, setIsResizing] = useState(false);
 
-  const resize = (e) => {
+  const resize = (e: MouseEvent) => {
     setIsResizing(true);
     const resizerWidth = 18;
     const newWidth = e.pageX - resizerWidth;
@@ -34,7 +39,7 @@ const Resizer = ({
     window.removeEventListener('mousemove', resize);
   };
 
-  const handleMouseDown = (e) => {
+  const handleMouseDown = (e: React.MouseEvent) => {
     e.preventDefault();
     window.addEventListener('mousemove', resize);
     window.addEventListener('mouseup', stopResize);

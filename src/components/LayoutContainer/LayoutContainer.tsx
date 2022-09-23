@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { Loading3QuartersOutlined } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 
@@ -7,7 +6,9 @@ import './LayoutContainerStyles.scss';
 import Map from '../Map/Map';
 import Resizer from '../Resizer/Resizer';
 import transformRoutes from '../../app/helpers/transformRoutes';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { setActiveRoute, updateRoutes } from '../../app/slices/pointsReducer';
+import { Point, Route } from '../../app/interfaces/store-interfaces';
 import deliveryLogo from '../../app/images/delivery_logo.svg';
 
 const {
@@ -16,28 +17,28 @@ const {
 
 const LayoutContainer = () => {
   const [width, setWidth] = useState(400);
-  const [routesList, setRoutesList] = useState([]);
-  const [pointsList, setPointsList] = useState([]);
+  const [routesList, setRoutesList] = useState<Route[]>([]);
+  const [pointsList, setPointsList] = useState<Point[]>([]);
   const [isUpdating, setIsUpdating] = useState(false);
 
   const pageMiddle = Math.round(window.innerWidth / 2);
   const minWidth = 200;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const routesData = useSelector((state) => state.points.routes);
-  const pointsData = useSelector((state) => state.points.points);
-  const activeId = useSelector((state) => state.points.activeRouteId);
-  const activeRouteData = useSelector((state) => state.points.activeRouteData);
-  const isFetching = useSelector((state) => state.points.isFetching);
+  const routesData = useAppSelector((state) => state.points.routes);
+  const pointsData = useAppSelector((state) => state.points.points);
+  const activeId = useAppSelector((state) => state.points.activeRouteId);
+  const activeRouteData = useAppSelector((state) => state.points.activeRouteData);
+  const isFetching = useAppSelector((state) => state.points.isFetching);
 
-  const changeFrom = (val, opt) => {
+  const changeFrom = (_: any, opt: { key: number}): void => {
     const choiceIndex = Number(opt?.key);
     const target = pointsData.find((p) => p.id === choiceIndex);
     dispatch(updateRoutes({ type: 'from', routeId: activeId, pointFrom: target }));
   };
 
-  const changeTo = (val, opt) => {
+  const changeTo = (_: any, opt: { key: number }): void => {
     const choiceIndex = Number(opt?.key);
     const target = pointsData.find((p) => p.id === choiceIndex);
     dispatch(updateRoutes({ type: 'to', routeId: activeId, pointTo: target }));
@@ -63,7 +64,7 @@ const LayoutContainer = () => {
     setPointsList(pointsData);
   }, [pointsData]);
 
-  const handleMenuClick = (e) => {
+  const handleMenuClick = (e: any) => {
     dispatch(setActiveRoute(e.key));
   };
 
