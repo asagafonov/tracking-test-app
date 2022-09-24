@@ -54,7 +54,6 @@ const LayoutContainer = () => {
         data.name = `Маршрут из ${data.from.name} в ${data.to.name}`;
       }
 
-      console.log('updatedRoute: ', updatedRoute);
       return updatedRoute;
     });
 
