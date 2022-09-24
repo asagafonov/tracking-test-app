@@ -6,8 +6,8 @@ import {
 } from '../interfaces/store-interfaces';
 
 interface PointsState {
-  points: Array<Point>;
-  routes: Array<Route>;
+  points: Point[];
+  routes: Route[];
   activeRouteId: number;
   activeRouteData: Route | null;
   isFetching: boolean;

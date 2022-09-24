@@ -10,7 +10,7 @@ interface Route {
   name: string;
   from: Point;
   to: Point;
-  polyline?: Array<number[]>;
+  polyline?: number[][];
 }
 
 export {

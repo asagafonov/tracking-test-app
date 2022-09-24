@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import cn from 'classnames';
-import PropTypes from 'prop-types';
 
 import './ResizerStyles.scss';
 import twoArrows from '../../app/images/two-arrows.png';
@@ -16,7 +15,7 @@ const Resizer = ({
   width: number;
   setWidth: React.Dispatch<React.SetStateAction<number>>;
 }) => {
-  const [isResizing, setIsResizing] = useState(false);
+  const [isResizing, setIsResizing] = useState<boolean>(false);
 
   const resize = (e: MouseEvent) => {
     setIsResizing(true);
@@ -71,13 +70,6 @@ const Resizer = ({
       </div>
     </div>
   );
-};
-
-Resizer.propTypes = {
-  minWidth: PropTypes.number,
-  pageMiddle: PropTypes.number,
-  width: PropTypes.number,
-  setWidth: PropTypes.func,
 };
 
 export default Resizer;
