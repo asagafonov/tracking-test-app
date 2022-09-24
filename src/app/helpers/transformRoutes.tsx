@@ -5,20 +5,20 @@ import { NodeIndexOutlined } from '@ant-design/icons';
 import { Point, Route } from '../interfaces/store-interfaces';
 
 const getItem = (
-  key,
-  icon,
-  children,
+  label: React.ReactNode,
+  key: number,
+  icon: React.ReactNode,
 ) => ({
   key,
   icon,
-  children,
+  label,
 });
 
 const transformRoutes = (
   routesList: Route[],
   pointsList: Point[],
-  changeFrom,
-  changeTo,
+  changeFrom: any,
+  changeTo: any,
 ) => routesList
   .map((el) => getItem(
     (
@@ -33,7 +33,7 @@ const transformRoutes = (
             pointsList
               .filter((point) => point.id !== routesList[el.id].to.id)
               .map((listEl) => (
-                <Select.Option value={listEl.name} key={listEl.id} />
+                <Select.Option value={listEl.name} key={listEl.id}>{}</Select.Option>
               ))
           }
         </Select>
@@ -45,7 +45,7 @@ const transformRoutes = (
             pointsList
               .filter((point) => point.id !== routesList[el.id].from.id)
               .map((listEl) => (
-                <Select.Option value={listEl.name} key={listEl.id} />
+                <Select.Option value={listEl.name} key={listEl.id}>{}</Select.Option>
               ))
           }
         </Select>

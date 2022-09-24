@@ -7,7 +7,7 @@ import Map from '../Map/Map';
 import Resizer from '../Resizer/Resizer';
 import transformRoutes from '../../app/helpers/transformRoutes';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { setActiveRoute, updateRoutes } from '../../app/slices/pointsReducer';
+import { setActiveRouteData, setActiveRouteId, updateRoutes } from '../../app/slices/pointsReducer';
 import { Point, Route } from '../../app/interfaces/store-interfaces';
 import deliveryLogo from '../../app/images/delivery_logo.svg';
 
@@ -16,10 +16,10 @@ const {
 } = Layout;
 
 const LayoutContainer = () => {
-  const [width, setWidth] = useState(400);
+  const [width, setWidth] = useState<number>(400);
   const [routesList, setRoutesList] = useState<Route[]>([]);
   const [pointsList, setPointsList] = useState<Point[]>([]);
-  const [isUpdating, setIsUpdating] = useState(false);
+  const [isUpdating, setIsUpdating] = useState<boolean>(false);
 
   const pageMiddle = Math.round(window.innerWidth / 2);
   const minWidth = 200;
@@ -28,23 +28,41 @@ const LayoutContainer = () => {
 
   const routesData = useAppSelector((state) => state.points.routes);
   const pointsData = useAppSelector((state) => state.points.points);
-  const activeId = useAppSelector((state) => state.points.activeRouteId);
+  const activeRouteId = useAppSelector((state) => state.points.activeRouteId);
   const activeRouteData = useAppSelector((state) => state.points.activeRouteData);
   const isFetching = useAppSelector((state) => state.points.isFetching);
 
-  const changeFrom = (_: any, opt: { key: number}): void => {
-    const choiceIndex = Number(opt?.key);
-    const target = pointsData.find((p) => p.id === choiceIndex);
-    dispatch(updateRoutes({ type: 'from', routeId: activeId, pointFrom: target }));
+  const handleChange = (type: string) => (_: any, opt: { key: number}): void => {
+    const choiceIndex = opt?.key;
+    const target = pointsData.find((p) => Number(p.id) === Number(choiceIndex));
+
+    const data: Route = { ...activeRouteData! };
+
+    const updatedRoutes = routesData.map((route) => {
+      const updatedRoute = { ...route };
+
+      if (Number(updatedRoute?.id) === Number(activeRouteId)) {
+        if (type === 'from') {
+          updatedRoute.from = target!;
+          data.from = target!;
+        }
+        if (type === 'to') {
+          updatedRoute.to = target!;
+          data.to = target!;
+        }
+        updatedRoute.name = `Маршрут из ${updatedRoute.from.name} в ${updatedRoute.to.name}`;
+        data.name = `Маршрут из ${data.from.name} в ${data.to.name}`;
+      }
+
+      console.log('updatedRoute: ', updatedRoute);
+      return updatedRoute;
+    });
+
+    dispatch(updateRoutes(updatedRoutes));
+    dispatch(setActiveRouteData(data));
   };
 
-  const changeTo = (_: any, opt: { key: number }): void => {
-    const choiceIndex = Number(opt?.key);
-    const target = pointsData.find((p) => p.id === choiceIndex);
-    dispatch(updateRoutes({ type: 'to', routeId: activeId, pointTo: target }));
-  };
-
-  const items = transformRoutes(routesList, pointsList, changeFrom, changeTo);
+  const items = transformRoutes(routesList, pointsList, handleChange('from'), handleChange('to'));
 
   useEffect(() => {
     if (!isFetching && activeRouteData?.polyline) {
@@ -65,7 +83,7 @@ const LayoutContainer = () => {
   }, [pointsData]);
 
   const handleMenuClick = (e: any) => {
-    dispatch(setActiveRoute(e.key));
+    dispatch(setActiveRouteId(e.key));
   };
 
   return (
